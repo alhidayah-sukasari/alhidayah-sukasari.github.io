@@ -28,7 +28,7 @@ nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-f
 .menu a:hover{background:var(--gl);color:var(--g)}
 .menu .cta{background:var(--g);color:#fff}.menu .cta:hover{background:var(--gd);color:#fff}
 #burger{display:none;background:none;border:0;font-size:1.6rem;cursor:pointer}
-@media(max-width:760px){
+@media(max-width:860px){
  #burger{display:block}
  .menu{display:none;position:absolute;top:60px;left:0;right:0;background:#fff;flex-direction:column;align-items:stretch;padding:12px 20px;border-bottom:1px solid var(--bd);box-shadow:var(--shadow)}
  .menu.open{display:flex}.menu a{padding:12px}
@@ -83,6 +83,28 @@ tr:hover td{background:var(--gl)}
 .tag{padding:3px 10px;border-radius:999px;font-size:.78rem;font-weight:700}
 .tin{background:#dff3e6;color:#1b6b3a}.tout{background:#fde4e1;color:#b03a2e}
 .note{font-size:.85rem;color:var(--mut);margin-top:10px}
+
+/* GALERI */
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.gallery a{position:relative;display:block;aspect-ratio:1/1;border-radius:12px;overflow:hidden;background:var(--gl);box-shadow:0 2px 10px rgba(0,0,0,.04);transition:.25s}
+.gallery a:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover)}
+.gallery img{width:100%;height:100%;object-fit:cover;display:block;transition:.4s}
+.gallery a:hover img{transform:scale(1.06)}
+.gallery a::after{content:"🔍";position:absolute;inset:0;display:grid;place-items:center;background:rgba(27,67,50,.45);color:#fff;font-size:1.4rem;opacity:0;transition:.25s}
+.gallery a:hover::after{opacity:1}
+.gallery-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+.gallery-note{font-size:.85rem;color:var(--mut);text-align:center;margin-top:14px}
+.gallery-empty{text-align:center;color:var(--mut);padding:40px 20px;border:1px dashed var(--bd);border-radius:var(--r);background:var(--card)}
+.gallery-empty .ico{margin:0 auto 10px}
+
+/* LIGHTBOX */
+#lightbox{position:fixed;inset:0;background:rgba(10,25,18,.92);display:none;align-items:center;justify-content:center;z-index:80;padding:20px}
+#lightbox.open{display:flex}
+#lightbox img{max-width:100%;max-height:88vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+#lightbox .lb-close{position:absolute;top:16px;right:20px;background:rgba(255,255,255,.15);color:#fff;border:0;font-size:1.4rem;width:44px;height:44px;border-radius:50%;cursor:pointer}
+#lightbox .lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.15);color:#fff;border:0;font-size:1.6rem;width:48px;height:48px;border-radius:50%;cursor:pointer}
+#lightbox .lb-prev{left:16px}#lightbox .lb-next{right:16px}
+#lightbox button:hover{background:rgba(255,255,255,.3)}
 
 /* STRUKTUR ORGANISASI */
 .org-section{background:#fff}
@@ -145,7 +167,8 @@ footer a{display:block;text-decoration:none;padding:2px 0;transition:.2s}footer 
  <button id="burger" aria-label="Menu">☰</button>
  <div class="menu" id="menu">
   <a href="#beranda">Beranda</a><a href="#tentang">Tentang</a><a href="#donasi">Donasi</a>
-  <a href="#laporan">Laporan Kas</a><a href="#tim">Pengurus</a><a class="cta" href="#donasi">Donasi Sekarang</a>
+  <a href="#laporan">Laporan Kas</a><a href="#galeri">Galeri</a><a href="#tim">Pengurus</a>
+  <a class="cta" href="#donasi">Donasi Sekarang</a>
  </div>
 </div></nav>
 
@@ -212,6 +235,34 @@ footer a{display:block;text-decoration:none;padding:2px 0;transition:.2s}footer 
  <p class="note" id="src"></p>
 </div></section>
 
+<!-- ================= GALERI ================= -->
+<section id="galeri" style="background:#fff"><div class="w">
+ <div class="center">
+  <div class="eyebrow">Dokumentasi</div>
+  <h2>Galeri Kegiatan Masjid</h2>
+  <p class="lead">Momen kebersamaan, kegiatan ibadah, dan pembangunan Masjid Al-Hidayah.</p>
+ </div>
+
+ <div class="gallery" id="galeriGrid">
+  <div class="gallery-empty" style="grid-column:1/-1">
+   <div class="ico">⏳</div>
+   Memuat foto dari Google Drive…
+  </div>
+ </div>
+
+ <div class="gallery-actions">
+  <span id="driveLink"></span>
+ </div>
+</div></section>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" aria-hidden="true">
+ <button class="lb-close" id="lbClose" aria-label="Tutup">✕</button>
+ <button class="lb-nav lb-prev" id="lbPrev" aria-label="Sebelumnya">‹</button>
+ <img id="lbImg" src="" alt="Foto kegiatan masjid">
+ <button class="lb-nav lb-next" id="lbNext" aria-label="Berikutnya">›</button>
+</div>
+
 <!-- STRUKTUR ORGANISASI -->
 <section id="tim" class="org-section"><div class="w">
  <div class="center">
@@ -269,7 +320,7 @@ footer a{display:block;text-decoration:none;padding:2px 0;transition:.2s}footer 
 <footer><div class="w">
  <div class="fg">
   <div><h4>🕌 Masjid Al-Hidayah</h4>Kp. Bolang RT 001/002, Desa Sukasari, Kec. Rajeg, Kab. Tangerang, Banten</div>
-  <div><h4>Navigasi</h4><a href="#tentang">Tentang</a><a href="#donasi">Donasi</a><a href="#laporan">Laporan Kas</a><a href="#tim">Pengurus</a></div>
+  <div><h4>Navigasi</h4><a href="#tentang">Tentang</a><a href="#donasi">Donasi</a><a href="#laporan">Laporan Kas</a><a href="#galeri">Galeri</a><a href="#tim">Pengurus</a></div>
   <div><h4>Rekening</h4>Bank BJB<br><b style="color:#fff">0114706858100</b></div>
  </div>
  <div class="cp">© 2026 DKM Masjid Al-Hidayah. Dibuat dengan ❤️ untuk kemajuan bersama.</div>
@@ -282,8 +333,25 @@ footer a{display:block;text-decoration:none;padding:2px 0;transition:.2s}footer 
 /* ================= KONFIGURASI ================= */
 const WA_NUMBER = "6282261291601";
 
-// Link CSV Google Sheet — SUDAH TERPASANG
 const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTGJ0VCnCgDYOxGJv93by3D2Y-Sgq_blHBF15ae12xFexQRSg1ShOYlafbBNnkAsw/pub?output=csv";
+
+const DRIVE_FOLDER_URL = "https://drive.google.com/drive/folders/1AG31qIUYzaylb0XvVGPYp9oRxufGbye1?usp=sharing";
+
+/* ==========================================================
+   FOTO GALERI — sudah terisi ID dari folder Google Drive Anda
+   Jika nanti ganti/tambah foto, cukup ubah id di bawah.
+   ========================================================== */
+const DRIVE_PHOTOS = [
+ { id: "1nui13Jtq4XX5cCQSM39SjwGWxZs72N-M", name: "Kegiatan Masjid 1" },
+ { id: "1YqXB43JpUdcGEOohd-wxXio85YcQgUtl", name: "Kegiatan Masjid 2" },
+ { id: "11m8yrJjTQriwHpTIC5zMruGTIs_qVd3x", name: "Kegiatan Masjid 3" },
+ { id: "1Nla_ymSJcf0QKlQGHEwhwgToX-io_tSY", name: "Kegiatan Masjid 4" },
+ { id: "1bn-Lh07YXS0xti5xDjfPkshr0oM2WTgQ", name: "Kegiatan Masjid 5" },
+ { id: "1hTKpdZPTOqpXKF08BUIArC-aDrN8Z1H9", name: "Kegiatan Masjid 6" },
+ { id: "13DRl-7Adq1mI-7y4MTOrVSyHt0ED8kPI", name: "Kegiatan Masjid 7" },
+ { id: "1Io9KCSs5FtChqaYxKva4DV0vbwgMO6Gj", name: "Kegiatan Masjid 8" },
+ { id: "1YqXB43JpUdcGEOohd-wxXio85YcQgUtl", name: "Kegiatan Masjid 9" }
+];
 /* ================================================ */
 
 const $=id=>document.getElementById(id);
@@ -297,7 +365,7 @@ $("menu").onclick=e=>{if(e.target.tagName==="A")$("menu").classList.remove("open
 // Salin rekening
 $("cp").onclick=async()=>{try{await navigator.clipboard.writeText("0114706858100");toast("Nomor rekening disalin ✓")}catch(e){toast("Salin manual: 0114706858100")}};
 
-// WhatsApp (khusus konfirmasi donasi)
+// WhatsApp
 let nominal=0;
 function waLink(msg){return "https://wa.me/"+WA_NUMBER+"?text="+encodeURIComponent(msg)}
 function updWa(){
@@ -312,7 +380,7 @@ $("nom").onclick=e=>{
 };
 updWa();
 
-// Parser CSV sederhana
+// Parser CSV
 function parseCSV(t){
  const rows=[];let r=[],c="",q=false;
  for(let i=0;i<t.length;i++){const ch=t[i];
@@ -351,6 +419,83 @@ function render(rows,live){
  }
  render(sample,false);
 })();
+
+/* ================= GALERI GOOGLE DRIVE ================= */
+const galeriGrid = $("galeriGrid");
+const galeriNote = $("galeriNote");
+$("driveLink").href = DRIVE_FOLDER_URL;
+
+let galeriItems = [];
+let lbIndex = 0;
+
+function thumbUrl(id, size=600){
+ return `https://drive.google.com/thumbnail?id=${id}&sz=w${size}`;
+}
+function viewUrl(id){
+ return `https://drive.google.com/file/d/${id}/view`;
+}
+
+function bukaLightbox(i){
+ lbIndex = i;
+ $("lbImg").src = thumbUrl(galeriItems[i].id, 1600);
+ $("lightbox").classList.add("open");
+ $("lightbox").setAttribute("aria-hidden","false");
+}
+function tutupLightbox(){
+ $("lightbox").classList.remove("open");
+ $("lightbox").setAttribute("aria-hidden","true");
+ $("lbImg").src = "";
+}
+function navigasiLightbox(arah){
+ if(!galeriItems.length) return;
+ lbIndex = (lbIndex + arah + galeriItems.length) % galeriItems.length;
+ $("lbImg").src = thumbUrl(galeriItems[lbIndex].id, 1600);
+}
+
+$("lbClose").onclick = tutupLightbox;
+$("lbPrev").onclick = () => navigasiLightbox(-1);
+$("lbNext").onclick = () => navigasiLightbox(1);
+$("lightbox").addEventListener("click", e => { if(e.target.id === "lightbox") tutupLightbox(); });
+document.addEventListener("keydown", e => {
+ if(!$("lightbox").classList.contains("open")) return;
+ if(e.key === "Escape") tutupLightbox();
+ if(e.key === "ArrowLeft") navigasiLightbox(-1);
+ if(e.key === "ArrowRight") navigasiLightbox(1);
+});
+
+function tampilkanGaleri(items){
+ galeriItems = items.filter(it => it && it.id);
+ if(!galeriItems.length){
+  galeriGrid.innerHTML = `
+   <div class="gallery-empty" style="grid-column:1/-1">
+    <div class="ico">📷</div>
+    <b>Belum ada foto.</b>
+   </div>`;
+  return;
+ }
+ galeriGrid.innerHTML = galeriItems.map((it, i) => `
+  <a href="${viewUrl(it.id)}" target="_blank" rel="noopener" data-index="${i}" title="${(it.name||'').replace(/"/g,'&quot;')}">
+   <img src="${thumbUrl(it.id, 600)}" alt="${(it.name||'Foto kegiatan masjid').replace(/"/g,'&quot;')}" loading="lazy"
+        onerror="this.parentElement.style.display='none'">
+  </a>`).join("");
+
+ galeriGrid.querySelectorAll("a").forEach(a => {
+  a.addEventListener("click", e => {
+   if(e.ctrlKey || e.metaKey || e.shiftKey) return;
+   e.preventDefault();
+   bukaLightbox(parseInt(a.dataset.index, 10));
+  });
+ });
+}
+
+function muatGaleri(){
+ const items = DRIVE_PHOTOS.filter(p => p.id);
+ tampilkanGaleri(items);
+ galeriNote.textContent = items.length
+  ? `Menampilkan ${items.length} foto dari album Google Drive Masjid Al-Hidayah.`
+  : "Belum ada foto yang dikonfigurasi.";
+}
+muatGaleri();
 </script>
 </body>
 </html>
